@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/raspi_test.iml" filepath="$PROJECT_DIR$/.idea/raspi_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../CNC_window_cleaner_project/.idea/CNC_window_cleaner_project.iml" filepath="$PROJECT_DIR$/../CNC_window_cleaner_project/.idea/CNC_window_cleaner_project.iml" />
     </modules>
   </component>
 </project>

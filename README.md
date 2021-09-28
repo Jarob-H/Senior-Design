@@ -1,6 +1,6 @@
 # CNC Window Cleaner Project
 
-###Overview
+### Overview
 ***
 This project is my senior design project. This project goal was to deliver a solution that would allow the operators of 
 the school's Machine Shop to see inside the machine during operation. This was not possible before due to coolant 

@@ -19,10 +19,7 @@ quit_button = tk.Button(master=window, text="quit", command=end,height= 4,width=
     fg="white",padx=100, pady=100)
 
 print_button.grid(column=0, row=0)
-quit_butt.grid(column=1, row=0)
+quit_button.grid(column=1, row=0)
 
 
 window.mainloop()
-
-print("Hello Jarob")
-print("hello corey")

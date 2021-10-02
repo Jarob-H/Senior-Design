@@ -28,7 +28,7 @@ high_button= tk.Button(master=window, text="High", command=high,height= hig,widt
 
 
 
-off_button = tk.Button(master=window, text="OFF", command=end,height= 8,width=8, bg="red",
+off_button = tk.Button(master=window, text="OFF", command=end,height= hig,width=wide, bg="red",
     fg="white")
 
 low_button.grid(column=0, row=0)

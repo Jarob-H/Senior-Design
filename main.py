@@ -1,6 +1,9 @@
 import tkinter as tk #lib for ui
 #three default speeds,off/cutom
 
+hig =10
+wide = 10
+
 def end(): #funtc called by quit button
     quit()
 
@@ -16,11 +19,11 @@ width, height = window.winfo_screenwidth(), window.winfo_screenheight() #setting
 
 window.geometry('%dx%d+0+0' % (width,height))#setting ui size
 
-low_button= tk.Button(master=window, text="LOW", command=low,height= 8,width=8, bg="blue",
+low_button= tk.Button(master=window, text="LOW", command=low,height= hig , width=wide, bg="blue",
     fg="white")
-med_button= tk.Button(master=window, text="MED", command=med,height= 8,width=8, bg="blue",
+med_button= tk.Button(master=window, text="MED", command=med,height= hig,width=wide, bg="blue",
     fg="white")
-high_button= tk.Button(master=window, text="High", command=high,height= 8,width=8, bg="blue",
+high_button= tk.Button(master=window, text="High", command=high,height= hig,width=wide, bg="blue",
     fg="white")
 
 

@@ -16,16 +16,16 @@ width, height = window.winfo_screenwidth(), window.winfo_screenheight() #setting
 
 window.geometry('%dx%d+0+0' % (width,height))#setting ui size
 
-low_button= tk.Button(master=window, text="LOW", command=low,height= 1,width=4, bg="blue",
+low_button= tk.Button(master=window, text="LOW", command=low,height= .8,width=2, bg="blue",
     fg="white",padx=100, pady=100)
-med_button= tk.Button(master=window, text="MED", command=med,height= 1,width=4, bg="blue",
+med_button= tk.Button(master=window, text="MED", command=med,height= .8,width=2, bg="blue",
     fg="white",padx=100, pady=100)
-high_button= tk.Button(master=window, text="High", command=high,height= 1,width=4, bg="blue",
+high_button= tk.Button(master=window, text="High", command=high,height= .8,width=2, bg="blue",
     fg="white",padx=100, pady=100)
 
 
 
-off_button = tk.Button(master=window, text="OFF", command=end,height= 1,width=4, bg="red",
+off_button = tk.Button(master=window, text="OFF", command=end,height= .8,width=2, bg="red",
     fg="white",padx=100, pady=100)
 
 low_button.grid(column=0, row=0)

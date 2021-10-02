@@ -31,9 +31,9 @@ high_button= tk.Button(master=window, text="High", command=high,height= hig,widt
 off_button = tk.Button(master=window, text="OFF", command=end,height= hig,width=wide, bg="red",
     fg="white")
 
-low_button.grid(column=0, row=0,padx=1, pady=5)
-med_button.grid(column=1, row=0,padx=1)
-high_button.grid(column=2, row=0,padx=1)
+low_button.grid(column=0, row=0,padx=2, pady=5)
+med_button.grid(column=1, row=0,padx=2)
+high_button.grid(column=2, row=0,padx=2)
 off_button.grid(column=1, row=1)
 
 

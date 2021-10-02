@@ -2,7 +2,7 @@ import tkinter as tk #lib for ui
 #three default speeds,off/cutom
 
 hig =11
-wide = 28
+wide = 29
 
 def end(): #funtc called by quit button
     quit()

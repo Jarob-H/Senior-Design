@@ -1,7 +1,7 @@
 import tkinter as tk #lib for ui
 #three default speeds,off/cutom
 
-hig =15
+hig =10
 wide = 10
 
 def end(): #funtc called by quit button

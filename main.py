@@ -2,7 +2,7 @@ import tkinter as tk #lib for ui
 #three default speeds,off/cutom
 
 hig =11
-wide = 10
+wide = 20
 
 def end(): #funtc called by quit button
     quit()
@@ -31,10 +31,11 @@ high_button= tk.Button(master=window, text="High", command=high,height= hig,widt
 off_button = tk.Button(master=window, text="OFF", command=end,height= hig,width=wide, bg="red",
     fg="white")
 
-low_button.grid(column=0, row=0)
+low_button.grid(column=0, row=0, pady=10)
 med_button.grid(column=1, row=0)
 high_button.grid(column=2, row=0)
 off_button.grid(column=1, row=1)
+
 
 
 window.mainloop() #runs ui

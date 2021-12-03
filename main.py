@@ -3,7 +3,8 @@ import tkinter as tk  # lib for ui
 
 # three default speeds,off/cutom
 
-
+def readserial():
+    input = "x"
 def sendSerial(speed,duration):#funtion to send speed and time to microC
     print("Speed:"+str(speed))
     print("Duration:"+str(duration))
@@ -17,6 +18,7 @@ class UI:
         self.windowHeight=0
         self.windowWidth=0
         self.window()
+        self.status="OFF"
 
     def window(self):
         window = tk.Tk()  # creating window ui instance

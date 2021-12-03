@@ -4,6 +4,10 @@ import tkinter as tk  # lib for ui
 # three default speeds,off/cutom
 
 
+def sendSerial(speed,duration):#funtion to send speed and time to microC
+    print("Speed:"+str(speed))
+    print("Duration:"+str(duration))
+
 class UI:
     def __init__(self):
         self.time = 0
@@ -50,7 +54,9 @@ class UI:
         quit()
 
     def low(self):  # funtc called by print button
-        print("Speed: Low")
+        self.speed=15
+        self.duration=100
+        sendSerial(self.speed,self.duration)
 
     def med(self):  # funtc called by print button
         print("Speed: Med")
@@ -60,13 +66,39 @@ class UI:
 
     def open_popup(self):
         popup=tk.Tk()
-        popup.geometry('%dx%d+0+0' % (self.windowWidth,self.windowHeight))  # setting ui size
-        label = tk.Label(popup, text='error')
-        label.pack(side="top", fill="x", pady=10)
-        B1 = tk.Button(popup, text="Okay", command=popup.destroy)
-        B1.pack()
+
+        tk.Label(popup, text="Speed:").grid(row=0)
+        tk.Label(popup, text="Duration").grid(row=1)
+        vcmd = (popup.register(self.validate),
+                '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        self.e1 = tk.Entry(popup, validate = 'key', validatecommand = vcmd)
+        self.e2 = tk.Entry(popup, validate = 'key', validatecommand = vcmd)
+
+        self.e1.grid(row=0, column=1)
+        self.e2.grid(row=1, column=1)
+
+
+
+        tk.Button(popup, text="Confirm", command=lambda:[self.sendCustom(),popup.destroy()],bg="green",
+                               fg="white").grid(row=2,column=0)
+        tk.Button(popup, text="Cancel", command=popup.destroy,bg="red",
+                               fg="white").grid(row=2, column=1)
         popup.mainloop()
 
+    def sendCustom(self):
+        sendSerial(self.e1.get(),self.e2.get())
+
+
+    def validate(self, action, index, value_if_allowed,
+                 prior_value, text, validation_type, trigger_type, widget_name):
+        if value_if_allowed:
+            try:
+                float(value_if_allowed)
+                return True
+            except ValueError:
+                return False
+        else:
+            return False
 
 def main():
     print("Hello World!")

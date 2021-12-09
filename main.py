@@ -1,25 +1,38 @@
+import tkinter
 import tkinter as tk  # lib for ui
 
 
 # three default speeds,off/cutom
+class SERIAL:
+    def __init__(self):
+        self.connecton=''
+    def serialsetup(self):
+        #set up serial connection
+        print("works")
+    def readserial(self):
+        #serialRead
+        UI.status='on'
 
-
-def sendSerial(speed,duration):#funtion to send speed and time to microC
-    print("Speed:"+str(speed))
-    print("Duration:"+str(duration))
+    def sendSerial(self,speed,duration):#funtion to send speed and time to microC
+        print("Speed:"+str(speed))
+        print("Duration:"+str(duration))
 
 class UI:
     def __init__(self):
-        self.time = 0
-        self.speed = 0
+        self.duration = 0
         self.buttonWidth = 29
         self.buttonHeight = 10
         self.windowHeight=0
         self.windowWidth=0
         self.window()
+        self.status="OFF"
 
     def window(self):
         window = tk.Tk()  # creating window ui instance
+        self.speed = tk.IntVar()
+        self.speed.set(0)
+
+
         self.windowWidth, self.windowHeight = window.winfo_screenwidth(), window.winfo_screenheight()  # setting ui screen to fill screen
 
         window.geometry('%dx%d+0+0' % (self.windowWidth, self.windowHeight))  # setting ui size
@@ -41,28 +54,44 @@ class UI:
         off_button = tk.Button(master=window, text="OFF", command=self.end, height=self.buttonHeight,
                                width=self.buttonWidth, bg="red",
                                fg="white")
+        self.status=tk.Label(master=window, height=self.buttonHeight,text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+str(self.duration),
+                               width=self.buttonWidth, bg="grey",
+                               fg="white")
+
 
         low_button.grid(column=0, row=0, padx=2, pady=5)
         med_button.grid(column=1, row=0, padx=2)
         high_button.grid(column=2, row=0, padx=2)
+        self.status.grid(column=0,row=1)
         custom_button.grid(column=1, row=1)
         off_button.grid(column=2, row=1)
 
         window.mainloop()  # runs ui
 
+
+    def updates(self):
+        self.status.configure(text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+str(self.duration))
+        self.status.grid(column=0, row=1)
+
     def end(self):  # funtc called by quit button
         quit()
 
     def low(self):  # funtc called by print button
-        self.speed=15
+        self.speed.set(10)
         self.duration=100
-        sendSerial(self.speed,self.duration)
+        self.updates()
+        SERIAL().sendSerial(self.speed.get(),self.duration)
 
     def med(self):  # funtc called by print button
-        print("Speed: Med")
-
+        self.speed.set(50)
+        self.duration = 100
+        self.updates()
+        SERIAL().sendSerial(self.speed.get(), self.duration)
     def high(self):  # funtc called by print button
-        print("Speed: High")
+        self.speed.set(100)
+        self.duration = 100
+        self.updates()
+        SERIAL().sendSerial(self.speed.get(), self.duration)
 
     def open_popup(self):
         popup=tk.Tk()
@@ -83,10 +112,15 @@ class UI:
                                fg="white").grid(row=2,column=0)
         tk.Button(popup, text="Cancel", command=popup.destroy,bg="red",
                                fg="white").grid(row=2, column=1)
+
         popup.mainloop()
 
     def sendCustom(self):
-        sendSerial(self.e1.get(),self.e2.get())
+        self.speed.set(self.e1.get())
+        self.duration =self.e2.get()
+        self.updates()
+        SERIAL().sendSerial(self.speed.get(), self.duration)
+        SERIAL().sendSerial(self.speed.get(),self.duration)
 
 
     def validate(self, action, index, value_if_allowed,
@@ -100,8 +134,8 @@ class UI:
         else:
             return False
 
+
 def main():
-    print("Hello World!")
     ui = UI()
 
 

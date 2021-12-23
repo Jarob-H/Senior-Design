@@ -1,19 +1,21 @@
 import tkinter
 import tkinter as tk  # lib for ui
+import serial
+
+#TODO: think about variable types. What needs to be public? do I need privates or special vars
 
 class SERIAL: #this class will contain funtions used to communicate with microcontrollor(MC)
     def __init__(self):
-        self.connecton=''
-    def serialsetup(self):
-        #set up serial connection
-        print("works")
+        self.serialSetup()
+    def serialSetup(self):
+        self.ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1) #setting up usb serial connection
+        self.ser.reset_input_buffer()
     def readserial(self):#funtion used to receive data back from MC
-        #serialRead
+        #todo: will need to loop this. Not sure how currently
+        line = self.ser.readline().decode('utf-8').rstrip()#this will most likely being a truple
         UI.currentStatus='off' #currently just here to test
     def sendSerial(self,speed,duration):#funtion to send speed and time to microC
-        print("Speed:"+str(speed))
-        print("Duration:"+str(duration))
-
+        ser.write((str(UI.speed)+str(UI.duration)).encode('utf-8'))
 
 class UI:#class that will contian all funtions for the User interface
     #TODO: figure out how implement read back serial and figure out how it will fit in to the progroam (timer maybe), figure out how to only allow one button at a time
@@ -25,7 +27,6 @@ class UI:#class that will contian all funtions for the User interface
         self.windowWidth=0 #how wide the main window will be. Made to fit Ras Pi officail &in screen
         self.currentStatus = "OFF"  # current status of CNC wiper. inits to off
         self.window() #calls window funtion that runs main loop
-
 
     def window(self):
         window = tk.Tk()  # creating window ui instance

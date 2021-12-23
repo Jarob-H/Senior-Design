@@ -3,35 +3,39 @@ import tkinter as tk  # lib for ui
 
 
 # three default speeds,off/cutom
-class SERIAL:
+class SERIAL: #this class will contain funtions used to communicate with microcontrollor(MC)
     def __init__(self):
         self.connecton=''
     def serialsetup(self):
         #set up serial connection
         print("works")
-    def readserial(self):
+    def readserial(self):#funtion used to receive data back from MC
         #serialRead
-        UI.status='on'
+        UI.currentStatus='off' #currently just here to test
 
     def sendSerial(self,speed,duration):#funtion to send speed and time to microC
         print("Speed:"+str(speed))
         print("Duration:"+str(duration))
 
-class UI:
+# TODO: add method to
+
+
+class UI:#class that will contian all funtions for the User interface
+    #TODO: figure out how implement read back serial and figure out how it will fit in to the progroam (timer maybe), figure out how to only allow one button at a time
     def __init__(self):
-        self.duration = 0
-        self.buttonWidth = 29
-        self.buttonHeight = 10
-        self.windowHeight=0
-        self.windowWidth=0
-        self.window()
-        self.status="OFF"
+        self.duration = 0 #varible to store how long the CNC wiper will be on
+        self.buttonWidth = 29 #How wide each button will be
+        self.buttonHeight = 10 # how tall each button will be
+        self.windowHeight=0 #heigh of the main UI window. Made to fit Ras Pi officail &in screen
+        self.windowWidth=0 #how wide the main window will be. Made to fit Ras Pi officail &in screen
+        self.currentStatus = "OFF"  # current status of CNC wiper. inits to off
+        self.window() #calls window funtion that runs main loop
+
 
     def window(self):
         window = tk.Tk()  # creating window ui instance
-        self.speed = tk.IntVar()
+        self.speed = tk.IntVar() #creates a var used in the tk class. stored in class variable to call for status panel
         self.speed.set(0)
-
 
         self.windowWidth, self.windowHeight = window.winfo_screenwidth(), window.winfo_screenheight()  # setting ui screen to fill screen
 
@@ -51,10 +55,10 @@ class UI:
                                width=self.buttonWidth, bg="yellow",
                                fg="white")
 
-        off_button = tk.Button(master=window, text="OFF", command=self.end, height=self.buttonHeight,
+        off_button = tk.Button(master=window, text="STOP", command=self.stop, height=self.buttonHeight,
                                width=self.buttonWidth, bg="red",
                                fg="white")
-        self.status=tk.Label(master=window, height=self.buttonHeight,text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+str(self.duration),
+        self.status=tk.Label(master=window, height=self.buttonHeight,text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+ str(self.duration) +'\nCurrent Status: ' + self.currentStatus,
                                width=self.buttonWidth, bg="grey",
                                fg="white")
 
@@ -66,12 +70,22 @@ class UI:
         custom_button.grid(column=1, row=1)
         off_button.grid(column=2, row=1)
 
+
+
         window.mainloop()  # runs ui
 
+    def stop(self):
+        self.speed.set(0)
+        self.duration = 0
+        self.currentStatus = 'Stopped'
+        self.updates()
 
     def updates(self):
-        self.status.configure(text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+str(self.duration))
+        self.status.configure(text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+str(self.duration)+'\nCurrent Status: ' + self.currentStatus)
         self.status.grid(column=0, row=1)
+
+    def checkSerial(self): #todo: will check the serial input then update the status panel with the infomation
+        print("add code here")
 
     def end(self):  # funtc called by quit button
         quit()
@@ -79,17 +93,20 @@ class UI:
     def low(self):  # funtc called by print button
         self.speed.set(10)
         self.duration=100
+        self.currentStatus='Running'
         self.updates()
         SERIAL().sendSerial(self.speed.get(),self.duration)
 
     def med(self):  # funtc called by print button
         self.speed.set(50)
         self.duration = 100
+        self.currentStatus = 'Running'
         self.updates()
         SERIAL().sendSerial(self.speed.get(), self.duration)
     def high(self):  # funtc called by print button
         self.speed.set(100)
         self.duration = 100
+        self.currentStatus = 'Running'
         self.updates()
         SERIAL().sendSerial(self.speed.get(), self.duration)
 
@@ -123,8 +140,7 @@ class UI:
         SERIAL().sendSerial(self.speed.get(),self.duration)
 
 
-    def validate(self, action, index, value_if_allowed,
-                 prior_value, text, validation_type, trigger_type, widget_name):
+    def validate(self, action, index, value_if_allowed,prior_value, text, validation_type, trigger_type, widget_name): #fuction to verify user only puts in a number
         if value_if_allowed:
             try:
                 float(value_if_allowed)

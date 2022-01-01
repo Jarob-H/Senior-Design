@@ -1,24 +1,21 @@
 import tkinter
 import tkinter as tk  # lib for ui
+import serial
 
+#TODO: think about variable types. What needs to be public? do I need privates or special vars
 
-# three default speeds,off/cutom
 class SERIAL: #this class will contain funtions used to communicate with microcontrollor(MC)
     def __init__(self):
-        self.connecton=''
-    def serialsetup(self):
-        #set up serial connection
-        print("works")
+        self.serialSetup()
+    def serialSetup(self):
+        self.ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1) #setting up usb serial connection
+        self.ser.reset_input_buffer()
     def readserial(self):#funtion used to receive data back from MC
-        #serialRead
+        #todo: will need to loop this. Not sure how currently
+        line = self.ser.readline().decode('utf-8').rstrip()#this will most likely being a truple
         UI.currentStatus='off' #currently just here to test
-
     def sendSerial(self,speed,duration):#funtion to send speed and time to microC
-        print("Speed:"+str(speed))
-        print("Duration:"+str(duration))
-
-# TODO: add method to
-
+        ser.write((str(UI.speed)+str(UI.duration)).encode('utf-8'))
 
 class UI:#class that will contian all funtions for the User interface
     #TODO: figure out how implement read back serial and figure out how it will fit in to the progroam (timer maybe), figure out how to only allow one button at a time
@@ -30,7 +27,6 @@ class UI:#class that will contian all funtions for the User interface
         self.windowWidth=0 #how wide the main window will be. Made to fit Ras Pi officail &in screen
         self.currentStatus = "OFF"  # current status of CNC wiper. inits to off
         self.window() #calls window funtion that runs main loop
-
 
     def window(self):
         window = tk.Tk()  # creating window ui instance
@@ -70,17 +66,15 @@ class UI:#class that will contian all funtions for the User interface
         custom_button.grid(column=1, row=1)
         off_button.grid(column=2, row=1)
 
-
-
         window.mainloop()  # runs ui
 
-    def stop(self):
+    def stop(self):#funtion to stop cnc wiper
         self.speed.set(0)
         self.duration = 0
         self.currentStatus = 'Stopped'
         self.updates()
 
-    def updates(self):
+    def updates(self): #function to update the status panel after new user input is pressed
         self.status.configure(text= 'Speed: '+str(self.speed.get()) +'\nDuration: '+str(self.duration)+'\nCurrent Status: ' + self.currentStatus)
         self.status.grid(column=0, row=1)
 
@@ -110,7 +104,7 @@ class UI:#class that will contian all funtions for the User interface
         self.updates()
         SERIAL().sendSerial(self.speed.get(), self.duration)
 
-    def open_popup(self):
+    def open_popup(self): #function that pops out for custom input
         popup=tk.Tk()
 
         tk.Label(popup, text="Speed:").grid(row=0)
@@ -123,8 +117,6 @@ class UI:#class that will contian all funtions for the User interface
         self.e1.grid(row=0, column=1)
         self.e2.grid(row=1, column=1)
 
-
-
         tk.Button(popup, text="Confirm", command=lambda:[self.sendCustom(),popup.destroy()],bg="green",
                                fg="white").grid(row=2,column=0)
         tk.Button(popup, text="Cancel", command=popup.destroy,bg="red",
@@ -132,7 +124,7 @@ class UI:#class that will contian all funtions for the User interface
 
         popup.mainloop()
 
-    def sendCustom(self):
+    def sendCustom(self): #function to set custom speed and duration
         self.speed.set(self.e1.get())
         self.duration =self.e2.get()
         self.updates()

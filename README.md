@@ -28,5 +28,5 @@ to preset values that are defined for each function. Finally, they call the Upda
 This function is used to update the status panel displayed on the UI
 
 
-This code is used to redefine the status variable displayed on the main UI screen by re configuring the text displayed.
+This code is used to redefine the status variable displayed on the main UI screen by re configuring the text displayed.~~~~
 

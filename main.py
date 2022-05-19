@@ -10,34 +10,38 @@ canvas.configure(bg='grey')
 
 
 class myThread(threading.Thread):
-    def __init__(self, stepper):
+    def __init__(self, stepper,microsteps):
         super().__init__()
-        self.stopped = False
-        self.stepper = stepper
+        self.stopped = False #init flag to terminate thread
+        self.stepper = stepper #makes local stepper
+        base= 9000
+        self.distance=microsteps*base
 
-    def run(self):
+    def run(self):#main thread function
         while not self.stopped:
-            Stepper.step(self.stepper, -9000)  #
-            Stepper.step(self.stepper, 9000)
+            Stepper.step(self.stepper, -self.distance)  #moves stepper
+            Stepper.step(self.stepper, self.distance)
 
-    def stop(self):
+    def stop(self):#method that terminates
         self.stopped = True
 
 
 class motor:
     def __init__(self):
+        limitSwitch=13 #makes a pin for limit switch
         c = SerialManager(device='/dev/ttyACM0')#use nanpy to create an object that communicates with arduino
-        self.a = ArduinoApi(connection=c)
-        self.a.pinMode(13, self.a.INPUT)
-
-        self.speed = 600
-        self.myStepper = Stepper(200, 8, 9, speed=0, pin3=10, pin4=11)
-        Stepper.setSpeed(self.myStepper, self.speed)
+        self.a = ArduinoApi(connection=c)#connencts to the arduino using connection object
+        self.a.pinMode(limitSwitch, self.a.INPUT)#inits a pin on the arduino to track limit swicth
+        self.speed = 600 # starting speed set to 600 rpms
+        self.microSteps = 1/(1/2)#1/microSteps. Example 1/halfstep
+        self.stepsPerRev= 200*self.microSteps#base 200 stepsPerRev
+        self.myStepper = Stepper(self.stepsPerRev, 8, 9, speed=self.speed, pin3=10, pin4=11)#sets up stepper object.(steps per revs,pins,pins,initial speed
         self.stopped = False
-        self.x = myThread(self.myStepper)
+        self.x = myThread(self.myStepper)#inits threads
+
 
     def startMotor(self):
-        self.x.start()
+        self.x.start()#starts the thread
 
     def home(self):
         Stepper.setSpeed(self.myStepper, 100)
@@ -46,7 +50,7 @@ class motor:
 
     def stop(self):
         self.x.stop()
-        self.x = myThread(self.myStepper)
+        self.x = myThread(self.myStepper,self.microSteps)
 
 
     def increase_speed(self):

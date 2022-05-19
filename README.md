@@ -5,6 +5,8 @@ This project is my senior design project. This project goal was to deliver a sol
 the school's Machine Shop to see inside the machine during operation. This was not possible before due to coolant 
 splashing against the window while the machine is operating. 
 
+Read the wiki:https://github.com/Jarob-H/Senior_design/wiki/Senior-Design-Project-Overview
+
 ***
 ## 
 

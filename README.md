@@ -6,6 +6,9 @@ the school's Machine Shop to see inside the machine during operation. This was n
 splashing against the window while the machine is operating. 
 
 ***
+## 
+
+***
 ## UI Class
 The operations for the CNC window wiper will be controlled on a raspberry pi 4 and 7in touch screen that is mounted on 
 the outside the CNC machine.

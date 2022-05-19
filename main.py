@@ -26,7 +26,7 @@ class myThread(threading.Thread):
 
 class motor:
     def __init__(self):
-        c = SerialManager(device='/dev/ttyACM0')
+        c = SerialManager(device='/dev/ttyACM0')#use nanpy to create an object that communicates with arduino
         self.a = ArduinoApi(connection=c)
         self.a.pinMode(13, self.a.INPUT)
 

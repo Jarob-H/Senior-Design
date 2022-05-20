@@ -8,62 +8,63 @@ canvas = tk.Canvas(root, width=800, height=410)
 canvas.grid(columnspan=2, rowspan=2)
 canvas.configure(bg='grey')
 
-
 class myThread(threading.Thread):
-    def __init__(self, stepper,microsteps):
+    def __init__(self, stepper, microsteps):
         super().__init__()
-        self.stopped = False #init flag to terminate thread
-        self.stepper = stepper #makes local stepper
-        base= 9000
-        self.distance=microsteps*base
+        self.stopped = False  # init flag to terminate thread
+        self.stepper = stepper  # makes local stepper
+        base = 9000
+        self.distance = microsteps * base
 
-    def run(self):#main thread function
+    def run(self):  # main thread function
         while not self.stopped:
-            Stepper.step(self.stepper, -self.distance)  #moves stepper
+            Stepper.step(self.stepper, -self.distance)  # moves stepper
             Stepper.step(self.stepper, self.distance)
 
-    def stop(self):#method that terminates
+    def stop(self):  # method that terminates
         self.stopped = True
 
 
 class motor:
     def __init__(self):
-        self.limitSwitch=13 #makes a pin for limit switch
-        c = SerialManager(device='/dev/ttyACM0')#use nanpy to create an object that communicates with arduino
-        self.a = ArduinoApi(connection=c)#connencts to the arduino using connection object
-        self.a.pinMode(self.limitSwitch, self.a.INPUT)#inits a pin on the arduino to track limit swicth
-        self.speed = 600 # starting speed set to 600 rpms
-        self.microSteps = 1/(1/2)#1/microSteps. Example 1/halfstep
-        self.stepsPerRev= 200*self.microSteps#base 200 stepsPerRev
-        self.myStepper = Stepper(self.stepsPerRev, 8, 9, speed=self.speed, pin3=10, pin4=11)#sets up stepper object.(steps per revs,pins,pins,initial speed
+        self.limitSwitch = 13  # makes a pin for limit switch
+        c = SerialManager(device='/dev/ttyACM0')  # use nanpy to create an object that communicates with arduino
+        self.a = ArduinoApi(connection=c)  # connencts to the arduino using connection object
+        self.a.pinMode(self.limitSwitch, self.a.INPUT)  # inits a pin on the arduino to track limit swicth
+        self.speed = 600  # starting speed set to 600 rpms
+        self.microSteps = 1 / (1 / 2)  # 1/microSteps. Example 1/halfstep
+        self.stepsPerRev = 200 * self.microSteps  # base 200 stepsPerRev
+        self.myStepper = Stepper(self.stepsPerRev, 8, 9, speed=self.speed, pin3=10,pin4=11)  # sets up stepper object.(steps per revs,pins,pins,initial speed
         self.stopped = False
-        self.x = myThread(self.myStepper)#inits threads
-
+        self.x = myThread(self.myStepper)  # inits threads
 
     def startMotor(self):
-        self.x.start()#starts the thread
+        self.x.start()  # starts the thread
 
     def home(self):
         Stepper.setSpeed(self.myStepper, 100)
-        while(self.a.digitalRead(self.limitSwich)!= 1):
-            self.myStepper.step(50*self.microSteps)
+        while (self.a.digitalRead(self.limitSwich) != 1):
+            self.myStepper.step(50 * self.microSteps)
 
     def stop(self):
-        self.x.stop()
-        self.x = myThread(self.myStepper,self.microSteps)
-
+        self.x.stop()#calls funtion that sets class flag to terminate thread
+        self.x = myThread(self.myStepper, self.microSteps)#restarts a new thread
 
     def increase_speed(self):
-        self.stop()
-        self.speed = self.speed + 200
-        Stepper.setSpeed(self.myStepper, self.speed)
-        self.startMotor()
+        if (self.speed < 800):#checks to see if the speed is over 800
+            self.stop()
+            self.speed = self.speed + 200#increase the speed by 200
+            Stepper.setSpeed(self.myStepper, self.speed)#set speed
+            self.startMotor()
+
 
     def decrease_speed(self):
-        self.stop()
-        self.speed = self.speed - 200
-        Stepper.setSpeed(self.myStepper, self.speed)
-        self.startMotor()
+        if (self.speed > 600):#checks to see if the speed is under 600
+            self.stop()
+            self.speed = self.speed - 200#decress the speed by 200
+            Stepper.setSpeed(self.myStepper, self.speed)#set speeds
+            self.startMotor()
+
 
 
 def main():

@@ -28,10 +28,10 @@ class myThread(threading.Thread):
 
 class motor:
     def __init__(self):
-        limitSwitch=13 #makes a pin for limit switch
+        self.limitSwitch=13 #makes a pin for limit switch
         c = SerialManager(device='/dev/ttyACM0')#use nanpy to create an object that communicates with arduino
         self.a = ArduinoApi(connection=c)#connencts to the arduino using connection object
-        self.a.pinMode(limitSwitch, self.a.INPUT)#inits a pin on the arduino to track limit swicth
+        self.a.pinMode(self.limitSwitch, self.a.INPUT)#inits a pin on the arduino to track limit swicth
         self.speed = 600 # starting speed set to 600 rpms
         self.microSteps = 1/(1/2)#1/microSteps. Example 1/halfstep
         self.stepsPerRev= 200*self.microSteps#base 200 stepsPerRev
@@ -45,8 +45,8 @@ class motor:
 
     def home(self):
         Stepper.setSpeed(self.myStepper, 100)
-        while(self.a.digitalRead(13)!= 1):
-            self.myStepper.step(50)
+        while(self.a.digitalRead(self.limitSwich)!= 1):
+            self.myStepper.step(50*self.microSteps)
 
     def stop(self):
         self.x.stop()

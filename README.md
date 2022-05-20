@@ -5,11 +5,17 @@ This project is my senior design project. This project goal was to deliver a sol
 the school's Machine Shop to see inside the machine during operation. This was not possible before due to coolant 
 splashing against the window while the machine is operating. 
 
-Read the wiki:https://github.com/Jarob-H/Senior_design/wiki/Senior-Design-Project-Overview
-
 ***
-## 
+## Thread Class
 
+This class is used to run one thread in the back ground. This thread's purpose is to run one cycle of the
+wiper(up and down). By running this operation in a thread the UI is able to countiue to run on the main thread and \
+change the status if needed.
+
+### run function:
+The run function is the main function of the thread that is executed when the thread is started. It runs in a loop
+that looks for a flag to see if the thread has been stopped.It uses the stepper object that is passed in as a parameter 
+into the thread class. 
 ***
 ## UI Class
 The operations for the CNC window wiper will be controlled on a raspberry pi 4 and 7in touch screen that is mounted on 
@@ -33,5 +39,5 @@ to preset values that are defined for each function. Finally, they call the Upda
 This function is used to update the status panel displayed on the UI
 
 
-This code is used to redefine the status variable displayed on the main UI screen by re configuring the text displayed.~~~~
+This code is used to redefine the status variable displayed on the main UI screen by reconfiguring the text displayed.
 

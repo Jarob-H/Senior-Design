@@ -2,27 +2,21 @@ import threading
 import tkinter as tk
 from nanpy import SerialManager, Stepper, ArduinoApi
 
-####
-root = tk.Tk()
-canvas = tk.Canvas(root, width=800, height=410)
-canvas.grid(columnspan=2, rowspan=2)
-canvas.configure(bg='grey')
 
 class myThread(threading.Thread):
     def __init__(self, stepper, microsteps):
         super().__init__()
-        self.stopped = False  # init flag to terminate thread
         self.stepper = stepper  # makes local stepper
         base = 9000
         self.distance = microsteps * base
+        self._running = True
 
     def run(self):  # main thread function
-        while not self.stopped:
+        while self._running:
             Stepper.step(self.stepper, -self.distance)  # moves stepper
             Stepper.step(self.stepper, self.distance)
-
-    def stop(self):  # method that terminates
-        self.stopped = True
+    def terminate(self):
+        self._running = False
 
 
 class motor:
@@ -39,7 +33,8 @@ class motor:
         self.x = myThread(self.myStepper)  # inits threads
 
     def startMotor(self):
-        self.x.start()  # starts the thread
+        if not self.x.isAlive():
+            self.x.start()  # starts the thread
 
     def home(self):
         Stepper.setSpeed(self.myStepper, 100)
@@ -57,7 +52,6 @@ class motor:
             Stepper.setSpeed(self.myStepper, self.speed)#set speed
             self.startMotor()
 
-
     def decrease_speed(self):
         if (self.speed > 600):#checks to see if the speed is under 600
             self.stop()
@@ -68,6 +62,12 @@ class motor:
 
 
 def main():
+    ###
+    root = tk.Tk()
+    canvas = tk.Canvas(root, width=800, height=410)
+    canvas.grid(columnspan=2, rowspan=2)
+    canvas.configure(bg='grey')
+
     # Start button
     motorClass = motor()
     start_text = tk.StringVar()

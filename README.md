@@ -15,10 +15,6 @@ firmware](https://github.com/nanpy/nanpy-firmware) and the Nanpy Python library 
 
 ## Collaborators
 
-If you have had people contributing to your project, a good idea is to give them credit. Create a table to add their username and a link to their GitHub account.
-
-Any other attribution goes here as well (including third party assets or tutorials and so on)
-
 | Username   |Contribution|Linkedin|Github Link ↘️                |
 |------------|---|------|---------------------------|
 |Jarob Heffner|Code|www.linkedin.com/in/jarob-heffner-85a880142/|www.github.com/Jarob-H|

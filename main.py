@@ -19,6 +19,7 @@ class myThread(threading.Thread):
         self._running = False
 
 
+
 class motor:
     def __init__(self):
         self.limitSwitch = 13  # makes a pin for limit switch
@@ -30,20 +31,22 @@ class motor:
         self.stepsPerRev = 200 * self.microSteps  # base 200 stepsPerRev
         self.myStepper = Stepper(self.stepsPerRev, 8, 9, speed=self.speed, pin3=10,pin4=11)  # sets up stepper object.(steps per revs,pins,pins,initial speed
         self.stopped = False
-        self.x = myThread(self.myStepper)  # inits threads
+        self.x = myThread(self.myStepper,self.microSteps)  # inits threads
 
     def startMotor(self):
-        if not self.x.isAlive():
+        if not self.x.is_alive():
             self.x.start()  # starts the thread
 
     def home(self):
         Stepper.setSpeed(self.myStepper, 100)
-        while (self.a.digitalRead(self.limitSwich) != 1):
+        while (self.a.digitalRead(self.limitSwitch) != 1):
             self.myStepper.step(50 * self.microSteps)
 
     def stop(self):
-        self.x.stop()#calls funtion that sets class flag to terminate thread
-        self.x = myThread(self.myStepper, self.microSteps)#restarts a new thread
+        if self.x.is_alive():
+            self.x.terminate()#calls funtion that sets class flag to terminate thread
+            self.home()
+
 
     def increase_speed(self):
         if (self.speed < 800):#checks to see if the speed is over 800

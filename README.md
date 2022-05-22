@@ -1,4 +1,5 @@
 # CNC Window Cleaner Project
+/hackage-deps/v/:https://github.com/nanpy/nanpy
 This project is our team's senior design project at the University of Denver. This project goal was to deliver a solution 
 that would allow the operators of the school's Machine Shop to see inside the machine during operation. This was not possible before due to coolant 
 splashing against the window while the machine is operating. 

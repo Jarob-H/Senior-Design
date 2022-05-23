@@ -68,6 +68,7 @@ def main():
     ###
     root = tk.Tk()
     canvas = tk.Canvas(root, width=800, height=410)
+    root.attributes('-fullscreen', True)#makes fullscreen on PI
     canvas.grid(columnspan=2, rowspan=2)
     canvas.configure(bg='grey')
 

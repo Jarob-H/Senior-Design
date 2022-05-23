@@ -1,5 +1,5 @@
 # <p style="text-align: center;">CNC Window Cleaner Project</p>
-***
+
 ![Dependence: Nanpy](https://img.shields.io/librariesio/github/nanpy/nanpy?label=Nanpy)
 
 This project is our team's senior design project at the University of Denver. This project goal was to deliver a solution 

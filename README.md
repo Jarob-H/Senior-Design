@@ -1,4 +1,4 @@
-# <p style="text-align: center;">CNC Window Cleaner Project</p>
+# CNC Window Cleaner Project
 
 ![Dependence: Nanpy](https://img.shields.io/librariesio/github/nanpy/nanpy?label=Nanpy)
 

@@ -1,5 +1,5 @@
-# CNC Window Cleaner Project
-
+# <p style="text-align: center;">CNC Window Cleaner Project</p>
+***
 ![Dependence: Nanpy](https://img.shields.io/librariesio/github/nanpy/nanpy?label=Nanpy)
 
 This project is our team's senior design project at the University of Denver. This project goal was to deliver a solution 
@@ -10,11 +10,14 @@ This software controls the Wiper via a GUI:
 * Controls speed
 * Variable duration 
 * Status Display
-
+## Documentation
+The projects document lives in the [Wiki](https://github.com/Jarob-H/Senior_design/wiki) section of this git .
 ## Installation
 This project relies on [Nanpy](https://github.com/nanpy/nanpy) . Nanpy is a library that use your Arduino as a slave, 
 controlled by a master device which is a Raspberry Pi 4 in our system. Follow the readme of Nanpy to install the [Arduino 
 firmware](https://github.com/nanpy/nanpy-firmware) and the Nanpy Python library (```pip install nanpy```) onto the Ras Pi.
+
+Ensure that when running the bash script to generate the config file for the Arduino 
 
 ## Collaborators
 

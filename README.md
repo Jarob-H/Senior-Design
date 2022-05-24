@@ -17,7 +17,8 @@ This project relies on [Nanpy](https://github.com/nanpy/nanpy) . Nanpy is a libr
 controlled by a master device which is a Raspberry Pi 4 in our system. Follow the readme of Nanpy to install the [Arduino 
 firmware](https://github.com/nanpy/nanpy-firmware) and the Nanpy Python library (```pip install nanpy```) onto the Ras Pi.
 
-Ensure that when running the bash script to generate the config file for the Arduino 
+Ensure that when running the bash script to generate the config file for the Arduino that you select to include the 
+stepper library. This allows you to create a stepper object on the Python side and control it through the arduino.
 
 ## Collaborators
 

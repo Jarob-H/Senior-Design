@@ -2,9 +2,8 @@
 
 ![Dependence: Nanpy](https://img.shields.io/librariesio/github/nanpy/nanpy?label=Nanpy)
 
-This project is our team's senior design project at the University of Denver. This project goal was to deliver a solution 
-that would allow the operators of the school's Machine Shop to see inside the machine during operation. This was not 
-possible before due to coolant splashing against the window while the machine is operating. 
+This project is our team's senior design project at the University of Denver. The project's goal was to deliver a solution 
+that would allow the operators of the school's Machine Shop HAAS Mini Mill to see inside the machine during operation. Prior to our project the user would struggle to see the part they were milling due to coolant splashing against the window while the machine is operating. 
 
 This software controls the Wiper via a GUI:
 * Controls speed

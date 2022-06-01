@@ -11,7 +11,7 @@ This software controls the Wiper via a GUI:
 * Home 
 
 ## Documentation
-The projects document lives in the [Wiki](https://github.com/Jarob-H/Senior_design/wiki) section of this git .
+The projects document lives in the [Wiki](https://github.com/Jarob-H/Senior_design/wiki) section of this git.
 ## Installation
 This project relies on [Nanpy](https://github.com/nanpy/nanpy) . Nanpy is a library that use your Arduino as a slave, 
 controlled by a master device which is a Raspberry Pi 4 in our system. Follow the readme of Nanpy to install the [Arduino 
@@ -21,7 +21,7 @@ Ensure that when running the bash script to generate the config file for the Ard
 stepper library. This allows you to create a stepper object in your Python script and control the stepper through the arduino.
 
 ## Future Expansion
-We hope to continue to exand the software funtionality by adding addition feature.
+We hope to continue to expand the software funtionality by adding additional features. After proving our design is funtional, we can now move on to add more complex features and countiue to further build out our product.
 
 Features we hope to add in the future:
 * Variable duration settings

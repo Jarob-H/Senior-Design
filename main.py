@@ -9,96 +9,84 @@ canvas.grid(columnspan=2, rowspan=2)
 canvas.configure(bg='grey')
 
 
-class myThread(threading.Thread):
-    def __init__(self, stepper):
+
+
+class Ui():
+    def __init__(self, root,motorClass):
         super().__init__()
-        self.stopped = False
-        self.stepper = stepper
 
-    def run(self):
-        while not self.stopped:
-            Stepper.step(self.stepper, -9000)  #
-            Stepper.step(self.stepper, 9000)
+        canvas = tk.Canvas(root, width=800, height=480, cursor='cross')
+        root.attributes('-fullscreen', True)  # makes fullscreen on PI
+        canvas.grid(columnspan=2, rowspan=3)
+        canvas.configure(bg='#3A3B3C')
 
-    def stop(self):
-        self.stopped = True
+        start_text = tk.StringVar()
+        start_btn = tk.Button(root, textvariable=start_text, font="Raleway",
+                              bg="#000000",
+                              bd=5,
+                              fg="white",
+                              activebackground='grey',
+                              cursor='cross',
+                              height=7, width=33)
+        start_text.set("Start")
+        start_btn.grid(column=1, row=0)
 
+        # Stop button
+        stop_text = tk.StringVar()
+        stop_btn = tk.Button(root, textvariable=stop_text, font="Raleway", bg="#000000",
+                             bd=5,
+                             fg="white",
+                             activebackground='grey',
+                             cursor='cross',
+                             height=7, width=33)
+        stop_text.set("Stop")
+        stop_btn.grid(column=1, row=2)
 
-class motor:
-    def __init__(self):
-        c = SerialManager(device='/dev/ttyACM0')
-        self.a = ArduinoApi(connection=c)
-        self.a.pinMode(13, self.a.INPUT)
+        # Increase button
+        increase_text = tk.StringVar()
+        increase_btn = tk.Button(root, textvariable=increase_text,
+                                 font="Raleway",
+                                 bg="#000000",
+                                 bd=5,
+                                 activebackground='grey',
+                                 cursor='cross',
+                                 fg="white", height=7, width=33)
+        increase_text.set("Increase")
+        increase_btn.grid(column=0, row=0)
 
-        self.speed = 600
-        self.myStepper = Stepper(200, 8, 9, speed=0, pin3=10, pin4=11)
-        Stepper.setSpeed(self.myStepper, self.speed)
-        self.stopped = False
-        self.x = myThread(self.myStepper)
+        # Decrease button
+        decrease_text = tk.StringVar()
+        decrease_btn = tk.Button(root, textvariable=decrease_text, command=lambda:printer(self.val),
+                                 font="Raleway",
+                                 bg="#000000",
+                                 bd=5,
+                                 activebackground='grey',
+                                 cursor='cross',
+                                 fg="white", height=7, width=33)
+        decrease_text.set("Decrease")
+        decrease_btn.grid(column=0, row=2)
 
-    def startMotor(self):
-        self.x.start()
+        # Slider
 
-    def home(self):
-        Stepper.setSpeed(self.myStepper, 100)
-        while(self.a.digitalRead(13)!= 1):
-            self.myStepper.step(50)
+        font1 = ('Raleway', 22, 'bold')
+        self.slider = tk.Scale(from_=0, to=1200, activebackground='grey', sliderlength=30, bd=5, bg='black', fg='white',
+                               orient='horizontal', cursor='cross', font=font1, length=353, width=50,
+                               command=self.updateVal)
+        self.val = self.slider.get()
+        self.slider.grid(column=0, row=1)
 
-    def stop(self):
-        self.x.stop()
-        self.x = myThread(self.myStepper)
+    def updateVal(self, event):
+        self.val = self.slider.get()
 
-
-    def increase_speed(self):
-        self.stop()
-        self.speed = self.speed + 200
-        Stepper.setSpeed(self.myStepper, self.speed)
-        self.startMotor()
-
-    def decrease_speed(self):
-        self.stop()
-        self.speed = self.speed - 200
-        Stepper.setSpeed(self.myStepper, self.speed)
-        self.startMotor()
+    def setVal(self, val):
+        self.slider.set(val)
 
 
 def main():
-    # Start button
-    motorClass = motor()
-    start_text = tk.StringVar()
-    start_btn = tk.Button(root, textvariable=start_text, command=lambda: motorClass.startMotor(), font="Raleway",
-                          bg="#000000",
-                          fg="white",
-                          height=9, width=35)
-    start_text.set("Start")
-    start_btn.grid(column=1, row=0)
-
-    # Stop button
-    stop_text = tk.StringVar()
-    stop_btn = tk.Button(root, textvariable=stop_text, command=lambda: motorClass.stop(), font="Raleway", bg="#000000",
-                         fg="white",
-                         height=9, width=35)
-    stop_text.set("Stop")
-    stop_btn.grid(column=1, row=1)
-
-    # Increase button
-    increase_text = tk.StringVar()
-    increase_btn = tk.Button(root, textvariable=increase_text, command=lambda: motorClass.increase_speed(),
-                             font="Raleway",
-                             bg="#000000",
-                             fg="white", height=9, width=35)
-    increase_text.set("Increase")
-    increase_btn.grid(column=0, row=0)
-
-    # Decrease button
-    decrease_text = tk.StringVar()
-    decrease_btn = tk.Button(root, textvariable=decrease_text, command=lambda: motorClass.decrease_speed(),
-                             font="Raleway",
-                             bg="#000000",
-                             fg="white", height=9, width=35)
-    decrease_text.set("Decrease")
-    decrease_btn.grid(column=0, row=1)
-
+    ###
+    motorClass=motor()
+    root = tk.Tk()
+    ui = Ui(root,motorClass)
     root.mainloop()
 
 

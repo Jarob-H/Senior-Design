@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import *
 from nanpy import SerialManager, Stepper, ArduinoApi
 
-
 class myThread(threading.Thread):
     def __init__(self, stepper, microsteps):
         super().__init__()

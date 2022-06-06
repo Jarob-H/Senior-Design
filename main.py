@@ -2,13 +2,64 @@ import threading
 import tkinter as tk
 from nanpy import SerialManager, Stepper, ArduinoApi
 
-####
-root = tk.Tk()
-canvas = tk.Canvas(root, width=800, height=410)
-canvas.grid(columnspan=2, rowspan=2)
-canvas.configure(bg='grey')
+class myThread(threading.Thread):
+    def __init__(self, stepper, microsteps):
+        super().__init__()
+        self.stepper = stepper  # makes local stepper
+        base = 9000
+        self.distance = microsteps * base
+        self._running = True
+
+    def run(self):  # main thread function
+        while self._running:
+            Stepper.step(self.stepper, -self.distance)  # moves stepper
+            Stepper.step(self.stepper, self.distance)
+
+    def terminate(self):
+        self._running = False
 
 
+class motor:
+    def __init__(self):
+        self.limitSwitch = 13  # makes a pin for limit switch
+        c = SerialManager(device='/dev/ttyACM0')  # use nanpy to create an object that communicates with arduino
+        self.a = ArduinoApi(connection=c)  # connencts to the arduino using connection object
+        self.a.pinMode(self.limitSwitch, self.a.INPUT)  # inits a pin on the arduino to track limit swicth
+        self.speed = 600  # starting speed set to 600 rpms
+        self.microSteps = 1 / (1 / 2)  # 1/microSteps. Example 1/halfstep
+        self.stepsPerRev = 200 * self.microSteps  # base 200 stepsPerRev
+        self.myStepper = Stepper(self.stepsPerRev, 8, 9, speed=self.speed, pin3=10,
+                                 pin4=11)  # sets up stepper object.(steps per revs,pins,pins,initial speed
+        self.stopped = False
+        self.x = myThread(self.myStepper, self.microSteps)  # inits threads
+
+    def startMotor(self):
+        if not self.x.is_alive():
+            self.x.start()  # starts the thread
+
+    def home(self):
+        Stepper.setSpeed(self.myStepper, 100)
+        while (self.a.digitalRead(self.limitSwitch) != 1):
+            self.myStepper.step(50 * self.microSteps)
+
+    def stop(self):
+        if self.x.is_alive():
+            self.x.terminate()  # calls funtion that sets class flag to terminate thread
+            self.home()
+
+    def increase_speed(self):
+        if (self.speed < 800):  # checks to see if the speed is over 800
+            self.stop()
+            self.speed = self.speed + 200  # increase the speed by 200
+            Stepper.setSpeed(self.myStepper, self.speed)  # set speed
+            self.startMotor()
+
+    def decrease_speed(self):
+        if (self.speed > 600):  # checks to see if the speed is under 600
+            self.stop()
+            self.speed = self.speed - 200  # decress the speed by 200
+            Stepper.setSpeed(self.myStepper, self.speed)  # set speeds
+            self.startMotor()
 
 
 class Ui():
@@ -56,7 +107,7 @@ class Ui():
 
         # Decrease button
         decrease_text = tk.StringVar()
-        decrease_btn = tk.Button(root, textvariable=decrease_text, command=lambda:printer(self.val),
+        decrease_btn = tk.Button(root, textvariable=decrease_text, command=,
                                  font="Raleway",
                                  bg="#000000",
                                  bd=5,

@@ -32,7 +32,7 @@ Features we hope to add in the future:
 
 | Username   |Contribution|Linkedin|Github Link ↘️                |
 |------------|---|------|---------------------------|
-|Jarob Heffner|Code|www.linkedin.com/in/jarob-heffner-85a880142/|www.github.com/Jarob-H|
+|Jarob Heffner|Backend Devlopement|www.linkedin.com/in/jarob-heffner-85a880142/|www.github.com/Jarob-H|
 |Corey Valenti|UI Development|www.linkedin.com/in/corey-valenti-1aba79193//|www.github.com/CoreyValenti|
 |Vivian Nguyen|STL and mechanical Design|www.linkedin.com/in/nguyenvivian28||
 |Isabel Montefinese|STL and mechanical Design|https://www.linkedin.com/in/isabel-montefinese/||
